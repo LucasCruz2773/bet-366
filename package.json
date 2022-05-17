@@ -1,0 +1,34 @@
+{
+  "name": "bet-366",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "jest": "jest",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasCruz2773/bet-366.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucasCruz2773/bet-366/issues"
+  },
+  "homepage": "https://github.com/LucasCruz2773/bet-366#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jest": "^28.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.3",
+    "superagent": "^7.1.3",
+    "supertest": "^6.2.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
