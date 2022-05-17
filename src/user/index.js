@@ -51,7 +51,6 @@ router.post('/', async (req, res) => {
     if(type != 'manager' && type != 'user'){
         return res.status(400).send({ error: { message: 'Tipo de usuário inválido' } })
     }
-
     try {
         if (await User.findOne({ email })) {
             return res.status(400).send({ error: { message: 'Email já cadastrado' } })
