@@ -36,7 +36,6 @@ router.get('/', async (req, res) => {
         return res.status(400).send({ error: { message: `Falha na consulta: ${error.message}` } })
     }
 })
-
 router.post('/', async (req, res) => {
     if(!req.headers.authorization){
         return res.status(403).send({ error: { message: `Acesso negado` } })
