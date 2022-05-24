@@ -22,6 +22,7 @@ beforeEach(async () => {
     await Bet.deleteMany();
     await Option.deleteMany();
     await UserBet.deleteMany();
+    await Wallet.deleteMany();
 })
 
 describe("Bet Use Case", () => {
@@ -66,6 +67,32 @@ describe("Bet Use Case", () => {
         expect(responseBet.statusCode).toBe(403);
     })
 
+    test('Should not make a bet with invalid value', async () => {
+        const response = await request(app)
+            .post('/bet')
+            .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODJlY2I5ZTEwYmJjYzg3ZjVmODZjMyIsImVtYWlsIjoiYW5kcmVAZ21haWwuY29tIiwidHlwZSI6Im1hbmFnZXIiLCJpYXQiOjE2NTMyNTkxMTJ9.UDNrdJnjF5gEK3xe4_7HibgevejOnfWzQ0WKkxhv65Y`)
+            .send(mockBet);
+        await request(app)
+            .post('/wallet')
+            .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGMyM2I0OTUwODBiYWJkMTI5ZTJmZiIsImVtYWlsIjoidGVzdGV1c2VyQGV4YW1wbGUuY29tIiwidHlwZSI6InVzZXIiLCJpYXQiOjE2NTMzNTEzNTl9.0XTFWUXmmqOQGvjHw7Hb9niSrz9cQl7ga7A4yaL5LPg`)
+            .send()
+
+        await request(app)
+            .put('/wallet/transaction')
+            .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGMyM2I0OTUwODBiYWJkMTI5ZTJmZiIsImVtYWlsIjoidGVzdGV1c2VyQGV4YW1wbGUuY29tIiwidHlwZSI6InVzZXIiLCJpYXQiOjE2NTMzNTEzNTl9.0XTFWUXmmqOQGvjHw7Hb9niSrz9cQl7ga7A4yaL5LPg`)
+            .send({
+                value: 40
+            })
+        const responseBet = await request(app)
+            .post('/user-bet')
+            .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGMyM2I0OTUwODBiYWJkMTI5ZTJmZiIsImVtYWlsIjoidGVzdGV1c2VyQGV4YW1wbGUuY29tIiwidHlwZSI6InVzZXIiLCJpYXQiOjE2NTMzNTEzNTl9.0XTFWUXmmqOQGvjHw7Hb9niSrz9cQl7ga7A4yaL5LPg`)
+            .send({
+                id_option: response.body.options[0]._id,
+                value: -10
+            })
+
+        expect(responseBet.statusCode).toBe(400);
+    })
     test('Should make a bet if is an user', async () => {
         const response = await request(app)
             .post('/bet')
@@ -90,22 +117,6 @@ describe("Bet Use Case", () => {
                 value: 10
             })
         expect(responseBet.statusCode).toBe(200);
-    })
-
-    test('Should not make a bet with invalid value', async () => {
-        const response = await request(app)
-            .post('/bet')
-            .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODJlY2I5ZTEwYmJjYzg3ZjVmODZjMyIsImVtYWlsIjoiYW5kcmVAZ21haWwuY29tIiwidHlwZSI6Im1hbmFnZXIiLCJpYXQiOjE2NTMyNTkxMTJ9.UDNrdJnjF5gEK3xe4_7HibgevejOnfWzQ0WKkxhv65Y`)
-            .send(mockBet);
-        const responseBet = await request(app)
-            .post('/user-bet')
-            .set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOGMyM2I0OTUwODBiYWJkMTI5ZTJmZiIsImVtYWlsIjoidGVzdGV1c2VyQGV4YW1wbGUuY29tIiwidHlwZSI6InVzZXIiLCJpYXQiOjE2NTMzNTEzNTl9.0XTFWUXmmqOQGvjHw7Hb9niSrz9cQl7ga7A4yaL5LPg`)
-            .send({
-                id_option: response.body.options[0]._id,
-                value: -10
-            })
-
-        expect(responseBet.statusCode).toBe(400);
     })
 })
 
