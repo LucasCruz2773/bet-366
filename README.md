@@ -39,7 +39,7 @@ yarn jest
 ```
 
 ## Diagrama UML
-<img src="DOCS/uml.jpeg"/>
+<img src="src/DOCS/uml.jpeg"/>
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
